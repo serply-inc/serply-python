@@ -1,0 +1,15 @@
+PROXY_LOCATIONS = [
+    "US",
+    "CA",
+    "IE",
+    "GB",
+    "FR",
+    "DE",
+    "SE",
+    "IN",
+    "JP",
+    "KR",
+    "SG",
+    "AU",
+    "BR",
+]

@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "serply"
+version = "0.1.0"
+description = ""
+authors = ["Tuan Nguyen <tuan@tuangeek.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.28.2"
+aiohttp = "^3.8.4"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.2"
+tox = "^4.4.6"
+black = "^23.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
