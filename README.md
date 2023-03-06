@@ -1,3 +1,5 @@
+![coverage badge](./coverage.svg)
+
 ```
 Web Interface Language Codes
 
