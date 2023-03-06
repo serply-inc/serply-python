@@ -38,6 +38,7 @@ jobs:
         API_KEY: ${{ secrets.SERPLY_API_KEY }}
       run: |
         pytest --cov serply --cov-report term-missing tests
+        ls -la
     - uses: actions/checkout@v2
     - name: Coverage Badge
       uses: tj-actions/coverage-badge-py@v1.8
