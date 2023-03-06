@@ -10,32 +10,32 @@ serply = Serply(api_key=API_KEY)
 
 
 def test_generate_simple_search_url():
-    url = serply.__generate_search_url__(keyword="iphone")
+    url = serply.__generate_url__(keyword="iphone")
     assert url == "https://api.serply.io/v1/search/q=iphone&num=10"
 
 
 def test_generate_simple_search_url_num_100():
-    url = serply.__generate_search_url__(keyword="iphone", num=100)
+    url = serply.__generate_url__(keyword="iphone", num=100)
     assert url == "https://api.serply.io/v1/search/q=iphone&num=100"
 
 
 def test_generate_search_url_start():
-    url = serply.__generate_search_url__(keyword="iphone", start=33)
+    url = serply.__generate_url__(keyword="iphone", start=33)
     assert url == "https://api.serply.io/v1/search/q=iphone&num=10&start=33"
 
 
 def test_generate_search_url_start_gl():
-    url = serply.__generate_search_url__(keyword="iphone", start=33, gl="de")
+    url = serply.__generate_url__(keyword="iphone", start=33, gl="de")
     assert url == "https://api.serply.io/v1/search/q=iphone&num=10&start=33&gl=de"
 
 
 def test_generate_simple_search_bing_url_num_100():
-    url = serply.__generate_search_url__(keyword="iphone", num=100, engine="bing")
+    url = serply.__generate_url__(keyword="iphone", num=100, engine="bing")
     assert url == "https://api.serply.io/v1/b/search/q=iphone&num=100"
 
 
 def test_generate_simple_search_bing_hl():
-    url = serply.__generate_search_url__(keyword="iphone", hl="lang_en", engine="bing")
+    url = serply.__generate_url__(keyword="iphone", hl="lang_en", engine="bing")
     assert url == "https://api.serply.io/v1/b/search/q=iphone&num=10&hl=lang_en"
 
 
@@ -86,7 +86,6 @@ def test_search_with_num():
     assert len(results["results"]) >= 10
 
 
-
 # test async versions
 def test_simple_search_default_async():
     results = asyncio.run(serply.search_async(keyword="iphone"))
@@ -133,4 +132,3 @@ def test_search_with_num_async():
     assert results
     assert "results" in results
     assert len(results["results"]) >= 10
-

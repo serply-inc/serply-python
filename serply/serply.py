@@ -53,8 +53,9 @@ class Serply(object):
         self.session = requests.Session()
         self.session.headers.update(self.headers)
 
-
-    def __generate_search_url__(self, keyword: str, num:int =10 , *args, **kwargs):
+    def __generate_url__(
+        self, keyword: str, num: int = 10, endpoint: str = "search", *args, **kwargs
+    ):
         """
             generate the search url
         :param args:
@@ -66,34 +67,33 @@ class Serply(object):
             "num": num,
         }
 
-        if "start" in kwargs and kwargs['start']:
-            params["start"] = kwargs['start']
-        if "gl" in kwargs and kwargs['gl']:
-            params["gl"] = kwargs['gl']
-        if "lr" in kwargs and kwargs['lr']:
-            params["lr"] = kwargs['lr']
-        if "hl" in kwargs and kwargs['hl']:
-            params["hl"] = kwargs['hl']
-        if "cr" in kwargs and kwargs['cr']:
-            params["cr"] = kwargs['cr']
-        if "cr" in kwargs and kwargs['cr']:
-            params["cr"] = kwargs['cr']
-        if "loc" in kwargs and kwargs['loc']:
-            params["loc"] = kwargs['loc']
+        if "start" in kwargs and kwargs["start"]:
+            params["start"] = kwargs["start"]
+        if "gl" in kwargs and kwargs["gl"]:
+            params["gl"] = kwargs["gl"]
+        if "lr" in kwargs and kwargs["lr"]:
+            params["lr"] = kwargs["lr"]
+        if "hl" in kwargs and kwargs["hl"]:
+            params["hl"] = kwargs["hl"]
+        if "cr" in kwargs and kwargs["cr"]:
+            params["cr"] = kwargs["cr"]
+        if "cr" in kwargs and kwargs["cr"]:
+            params["cr"] = kwargs["cr"]
+        if "loc" in kwargs and kwargs["loc"]:
+            params["loc"] = kwargs["loc"]
 
-        if "engine" in kwargs and kwargs['engine'].lower() in ["bing", "b"]:
-            return f"{self.base_url}{self.api_version}/b/search/{urlencode(params)}"
+        if endpoint == "news":
+            return f"{self.base_url}{self.api_version}/news/{urlencode(params)}"
         else:
-            # defaults to google
-            return f"{self.base_url}{self.api_version}/search/{urlencode(params)}"
+            # default to search
+            if "engine" in kwargs and kwargs["engine"].lower() in ["bing", "b"]:
+                return f"{self.base_url}{self.api_version}/b/search/{urlencode(params)}"
+            else:
+                # defaults to google
+                return f"{self.base_url}{self.api_version}/search/{urlencode(params)}"
 
     def search(
-        self,
-        keyword: str,
-        num: int = 10,
-        engine: str = "google",
-        *args,
-        **kwargs
+        self, keyword: str, num: int = 10, engine: str = "google", *args, **kwargs
     ) -> dict:
         """
             search for a product
@@ -111,7 +111,9 @@ class Serply(object):
         :return: dict: response from API
         """
         results = {}
-        url = self.__generate_search_url__(keyword=keyword, num=num, engine=engine, *args, **kwargs)
+        url = self.__generate_url__(
+            keyword=keyword, num=num, engine=engine, *args, **kwargs
+        )
 
         start = time.time()
         resp = self.session.get(url)
@@ -123,17 +125,12 @@ class Serply(object):
             return {}
 
         results = resp.json()
-        results['real_time'] = end - start
+        results["real_time"] = end - start
 
         return resp.json()
 
     async def search_async(
-        self,
-        keyword: str,
-        num: int = 10,
-        engine: str = "google",
-        *args,
-        **kwargs
+        self, keyword: str, num: int = 10, engine: str = "google", *args, **kwargs
     ) -> dict:
         """
             search for a product
@@ -152,7 +149,9 @@ class Serply(object):
         """
         results = {}
 
-        url = self.__generate_search_url__(keyword=keyword, num=num, engine=engine, *args, **kwargs)
+        url = self.__generate_url__(
+            keyword=keyword, num=num, engine=engine, *args, **kwargs
+        )
 
         start = time.time()
         async with aiohttp.ClientSession(headers=self.headers) as session:
@@ -163,6 +162,78 @@ class Serply(object):
 
         end = time.time()
         self.logger.debug(f"Search took {end - start} seconds")
-        results['real_time'] = end - start
+        results["real_time"] = end - start
         return results
 
+    def news(
+        self, keyword: str, num: int = 10, engine: str = "google", *args, **kwargs
+    ) -> dict:
+        """
+            search for news
+            https://www.seoquake.com/blog/google-search-param/ for guidance on params
+            https://webapps.stackexchange.com/questions/16047/how-to-restrict-a-google-search-to-results-of-a-specific-language
+        :param keyword: str: keywords to search for
+        :param num: int: number of results to return (max 100, defaults to 10)
+        :param engine: str: search engine to use (defaults to google) [google, bing]
+        :param start: int: start index for results (defaults to 0)
+        :param lr: str: language code to use for search (defaults to en)
+        :param hl: str: web interface language lang_xx (defaults to lang_en)
+        :param cr: str: country code to use countrXX for search (e.g countryUS, countryCA, countryGB)
+        :param gl: str: geolocation country code (xx) to perform search (e.g 'us', 'ca', 'gb')
+        :param loc: str: find results for a given area (e.g. "new york", "san francisco", "london)
+        :return: dict: response from API
+        """
+        results = {}
+        url = self.__generate_url__(
+            keyword=keyword, num=num, endpoint="news", engine=engine, *args, **kwargs
+        )
+
+        start = time.time()
+        resp = self.session.get(url)
+        end = time.time()
+        self.logger.debug(f"News took {end - start} seconds")
+
+        if resp.status_code != 200:
+            self.logger.error(f"Error {resp.status_code} {resp.text}")
+            return {}
+
+        results = resp.json()
+        results["real_time"] = end - start
+
+        return resp.json()
+
+    async def news_async(
+        self, keyword: str, num: int = 10, engine: str = "google", *args, **kwargs
+    ) -> dict:
+        """
+            search for news
+            https://www.seoquake.com/blog/google-search-param/ for guidance on params
+            https://webapps.stackexchange.com/questions/16047/how-to-restrict-a-google-search-to-results-of-a-specific-language
+        :param keyword: str: keywords to search for
+        :param num: int: number of results to return (max 100, defaults to 10)
+        :param engine: str: search engine to use (defaults to google) [google, bing]
+        :param start: int: start index for results (defaults to 0)
+        :param lr: str: language code to use for search (defaults to en)
+        :param hl: str: web interface language lang_xx (defaults to lang_en)
+        :param cr: str: country code to use countrXX for search (e.g countryUS, countryCA, countryGB)
+        :param gl: str: geolocation country code (xx) to perform search (e.g 'us', 'ca', 'gb')
+        :param loc: str: find results for a given area (e.g. "new york", "san francisco", "london)
+        :return: dict: response from API
+        """
+        results = {}
+
+        url = self.__generate_url__(
+            keyword=keyword, num=num, endpoint="news", engine=engine, *args, **kwargs
+        )
+
+        start = time.time()
+        async with aiohttp.ClientSession(headers=self.headers) as session:
+            async with session.get(url) as resp:
+                resp.raise_for_status()
+                text = await resp.text()
+                results = await resp.json()
+
+        end = time.time()
+        self.logger.debug(f"News took {end - start} seconds")
+        results["real_time"] = end - start
+        return results
