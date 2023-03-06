@@ -13,9 +13,9 @@ class Serply(object):
         self,
         api_key: str,
         api_version: str = "v1",
-        device_type: str = None,
+        device_type: str = "",
         proxy_location: str = "",
-        logger: logging.Manager = None,
+        logger: logging.Logger = logging.getLogger(__name__),
     ):
         """
             create a instance of Serply object
@@ -24,7 +24,7 @@ class Serply(object):
         :param device_type: str: device type to use (defaults to desktop) [desktop, mobile]
         :param logger:
         """
-        self.logger = logger or logging.getLogger(__name__)
+        self.logger = logger
         self.base_url = "https://api.serply.io/"
         self.api_version = api_version
         self.api_key = api_key

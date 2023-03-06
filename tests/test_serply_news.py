@@ -48,8 +48,10 @@ def test_simple_news_in_spanish():
     assert len(results["entries"]) > 0
 
     # expect first source to include "es" in the url and title to be in spanish
-    detected_language = langid.classify(results["entries"][0]["title"].encode("utf-8"))
-    assert detected_language
+    detected_language, confidence = langid.classify(
+        results["entries"][0]["title"].encode("utf-8")
+    )
+    assert detected_language == "es"
 
 
 def test_simple_news_in_interface_german():
@@ -61,8 +63,11 @@ def test_simple_news_in_interface_german():
     assert results["entries"]
     assert len(results["entries"]) > 0
 
-    # expect first source to include "es" in the url
-    assert "es." in results["entries"][0]["source"]["href"]
+    # expect first source to include "es" in the url and title to be in spanish
+    detected_language, confidence = langid.classify(
+        results["entries"][0]["title"].encode("utf-8")
+    )
+    assert detected_language == "de"
 
 
 # test async versions
@@ -86,6 +91,12 @@ def test_simple_news_in_spanish_async():
     assert results["entries"]
     assert len(results["entries"]) > 0
 
+    # expect first source to include "es" in the url and title to be in spanish
+    detected_language, confidence = langid.classify(
+        results["entries"][0]["title"].encode("utf-8")
+    )
+    assert detected_language == "es"
+
 
 def test_simple_news_in_interface_german_async():
     results = asyncio.run(
@@ -97,3 +108,8 @@ def test_simple_news_in_interface_german_async():
     assert "entries" in results
     assert results["entries"]
     assert len(results["entries"]) > 0
+    # expect first source to include "es" in the url and title to be in spanish
+    detected_language, confidence = langid.classify(
+        results["entries"][0]["title"].encode("utf-8")
+    )
+    assert detected_language == "de"

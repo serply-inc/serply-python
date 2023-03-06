@@ -2,6 +2,7 @@ import os
 import unittest
 import pytest
 import asyncio
+import langid
 from serply.serply import Serply
 
 API_KEY = os.getenv("API_KEY", None)
@@ -54,7 +55,10 @@ def test_simple_search_in_spanish():
 
     # expect one link to use https://www.apple.com/es/iphone/
     for result in results["results"]:
-        if result["link"] == "https://www.apple.com/es/iphone/":
+        detected_language, confidence = langid.classify(
+            result["description"].encode("utf-8")
+        )
+        if detected_language == "es":
             assert True
             return
 
@@ -65,9 +69,11 @@ def test_simple_search_in_interface_german():
     assert "results" in results
     assert len(results["results"]) > 0
 
-    # expect one link to use https://www.apple.com/de/iphone/
     for result in results["results"]:
-        if result["link"] == "https://www.apple.com/de/iphone/":
+        detected_language, confidence = langid.classify(
+            result["description"].encode("utf-8")
+        )
+        if detected_language == "de":
             assert True
             return
 
@@ -100,9 +106,11 @@ def test_simple_search_in_spanish_async():
     assert "results" in results
     assert len(results["results"]) > 0
 
-    # expect one link to use https://www.apple.com/es/iphone/
     for result in results["results"]:
-        if result["link"] == "https://www.apple.com/es/iphone/":
+        detected_language, confidence = langid.classify(
+            result["description"].encode("utf-8")
+        )
+        if detected_language == "es":
             assert True
             return
 
@@ -113,9 +121,11 @@ def test_simple_search_in_interface_german_async():
     assert "results" in results
     assert len(results["results"]) > 0
 
-    # expect one link to use https://www.apple.com/de/iphone/
     for result in results["results"]:
-        if result["link"] == "https://www.apple.com/de/iphone/":
+        detected_language, confidence = langid.classify(
+            result["description"].encode("utf-8")
+        )
+        if detected_language == "de":
             assert True
             return
 
