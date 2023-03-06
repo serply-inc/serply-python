@@ -19,6 +19,7 @@ langid = "^1.1.6"
 charset-normalizer = "^3.1.0"
 mypy = "^1.0.1"
 types-requests = "^2.28.11.15"
+pytest-cov = "^4.0.0"
 
 [build-system]
 requires = ["poetry-core"]
