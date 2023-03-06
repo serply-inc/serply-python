@@ -26,7 +26,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install flake8 pytest pytest-cov langid aiohttp requests
+        python -m pip install flake8 pytest pytest coverage langid aiohttp requests
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -37,19 +37,20 @@ jobs:
       env:
         API_KEY: ${{ secrets.SERPLY_API_KEY }}
       run: |
-        pytest --cov serply --cov-report term-missing --cov-report html:htmlcov --cov-report xml tests
-        ls -la
-    - uses: actions/checkout@v2
+        coverage run -m pytest tests
+        coverage report -m
+
     - name: Coverage Badge
-      uses: tj-actions/coverage-badge-py@v1.8
+      uses: tj-actions/coverage-badge-py@v2
+
     - name: Verify Changed files
-      uses: tj-actions/verify-changed-files@v12
-      id: changed_files
+      uses: tj-actions/verify-changed-files@v13
+      id: verify-changed-files
       with:
         files: coverage.svg
 
     - name: Commit files
-      if: steps.changed_files.outputs.files_changed == 'true'
+      if: steps.verify-changed-files.outputs.files_changed == 'true'
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
@@ -57,7 +58,7 @@ jobs:
         git commit -m "Updated coverage.svg"
 
     - name: Push changes
-      if: steps.changed_files.outputs.files_changed == 'true'
+      if: steps.verify-changed-files.outputs.files_changed == 'true'
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.github_token }}
