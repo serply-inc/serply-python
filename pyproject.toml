@@ -6,7 +6,7 @@ authors = ["Tuan Nguyen <tuan@tuangeek.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.7"
 requests = "^2.28.2"
 aiohttp = "^3.8.4"
 
