@@ -7,6 +7,26 @@
 
 Serply is a Python SDK for the Serply API. It provides a simple interface to the API, and handles all the authentication and request signing for you.
 
+## Table of Contents
+- [Serply Python SDK](#serply-python-sdk)
+- [Table of Contents](#table-of-contents)
+- [Installation](#installation)
+- [API Wrapper](#api-wrapper)
+- [Usage](#usage)
+  - [Web Search](#web-search)
+    - [Web Search with options](#web-search-with-options)
+  - [Video Search](#video-search)
+  - [Image Search](#image-search)
+  - [Product Search](#product-search)
+  - [Jobs Search](#jobs-search)
+  - [News Search](#news-search)
+  - [SERP Search](#serp-search)
+  - [Crawl Search](#crawl-search)
+- [Advance Parameters](#advance-parameters)
+  - [Web Interface Language Codes (hl)](#web-interface-language-codes-hl)
+- [Credits](#credits)
+- [Reporting Issues](#reporting-issues)
+
 ## Installation
 
 Using PyPi
@@ -351,7 +371,7 @@ lr=lang_vi    Vietnamese
 This package was created and maintained by [Serply Inc](https://github.com/serply-inc).
 
 
-## Report Bugs
+## Reporting Issues
 
 Report bugs at https://github.com/serply-inc/serply-python/issues.
 
