@@ -23,6 +23,19 @@ cd serply-python
 pip install .
 ```
 
+## API Wrapper
+
+This SDK implements the following Serply API endpoints:
+
+- [`/v1/search/{query}`](#web-search) - [Web Search](#web-search) - Search for web pages
+- [`/v1/video/{query}`](#video-search) - [Video Search](#video-search) - Search for videos
+- [`/v1/search/{query}`](#image-search) - [Image Search](#image-search) - Search for images
+- [`/v1/news/{query}`](#news-search) - [News Search](#news-search) - Search for news
+- [`/v1/job/crawl/{query}`](#crawl-search) - [Crawl Search](#crawl-search) - Search for web pages and HTML for custom parsing
+- [`/v1/product/search/{query}`](#product-search) - [Product Search](#product-search) - Search for products
+- [`/v1/job/search/{query}`](#jobs-search) - [Jobs Search](#jobs-search) - Search for jobs
+
+
 ## Usage
 
 ### Web Search
@@ -105,6 +118,15 @@ Basic News search for `bitcoin`
 results = serply.news('bitcoin')
 ```
 
+### Crawl Search
+
+Basic Crawl search for `workout routines`
+
+```python
+
+```python
+results = serply.crawl('workout routines')
+```
 
 ## Advance Parameters
 
