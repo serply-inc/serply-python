@@ -94,7 +94,9 @@ class Serply(object):
         elif endpoint == "news":
             return f"{self.base_url}{self.api_version}/news/{urlencode(params)}"
         elif endpoint == "products":
-            return f"{self.base_url}{self.api_version}/product/search/{urlencode(params)}"
+            return (
+                f"{self.base_url}{self.api_version}/product/search/{urlencode(params)}"
+            )
         else:
             # default to search
             if "engine" in kwargs and kwargs["engine"].lower() in ["bing", "b"]:
@@ -122,17 +124,23 @@ class Serply(object):
         if resp.status_code == 200:
             results = resp.json()
         else:
-            self.logger.error(f"Error making request to {method} {url} status code: {resp.status_code}")
-            results = {"error": f"Error making request to {method} {url} status code: {resp.status_code}"}
+            self.logger.error(
+                f"Error making request to {method} {url} status code: {resp.status_code}"
+            )
+            results = {
+                "error": f"Error making request to {method} {url} status code: {resp.status_code}"
+            }
 
         end = time.time()
 
         self.logger.debug(f"Request took {end - start} seconds")
-        results['request_time'] = end - start
+        results["request_time"] = end - start
 
         return results
 
-    async def __make_request_async__(self, url: str, method: str = "get", *args, **kwargs) -> Dict:
+    async def __make_request_async__(
+        self, url: str, method: str = "get", *args, **kwargs
+    ) -> Dict:
         """
             make a request to the API
         :param url: str: url to make request to
@@ -147,19 +155,23 @@ class Serply(object):
             if method.lower() == "post":
                 async with session.post(url, *args, **kwargs) as resp:
                     if resp.status != 200:
-                        self.logger.error(f"Error making request to {method} {url} status code: {resp.status}")
+                        self.logger.error(
+                            f"Error making request to {method} {url} status code: {resp.status}"
+                        )
                     resp.raise_for_status()
                     results = await resp.json()
             else:
                 async with session.get(url) as resp:
                     if resp.status != 200:
-                        self.logger.error(f"Error making request to {method} {url} status code: {resp.status}")
+                        self.logger.error(
+                            f"Error making request to {method} {url} status code: {resp.status}"
+                        )
                     resp.raise_for_status()
                     results = await resp.json()
 
         end = time.time()
         self.logger.debug(f"Request took {end - start} seconds")
-        results['request_time'] = end - start
+        results["request_time"] = end - start
         return results
 
     def search(

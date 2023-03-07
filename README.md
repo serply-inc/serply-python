@@ -1,8 +1,76 @@
 ![coverage badge](./coverage.svg)
 
-```
-Web Interface Language Codes
 
+![serply logo](./images/serply_logo.png)
+
+# Serply Python SDK
+
+Serply is a Python SDK for the Serply API. It provides a simple interface to the API, and handles all the authentication and request signing for you.
+
+## Installation
+
+Using PyPi
+
+```bash
+pip install serply
+```
+
+From source
+
+```bash
+git clone https://github.com/serply-inc/serply-python.git
+cd serply-python
+pip install .
+```
+
+## Usage
+
+### Web Search
+
+Basic search for `iphone 15 specs`
+```python
+from serply import Serply
+
+serply = Serply('your_api_key')
+results = serply.search('iphone 15 specs')
+```
+
+The library also supports async requests using `aiohttp` for more efficient high volume queries.
+
+```python
+import asyncio
+from serply import Serply
+
+serply = Serply('your_api_key')
+results = asyncio.run(serply.search_async('iphone 15 specs'))
+```
+
+### Web Search with options
+
+Web search results (100 results, default is 10)
+
+```python
+results = serply.search('iphone 15 specs', num=100)
+```
+
+Paging results (start at 20th result, default to 0)
+
+```python
+results = serply.search('iphone 15 specs', start=20)
+```
+
+Perform search in a specific language (Spanish)
+
+```python
+results = serply.search(keyword="iphone", lr="lang_es")
+```
+
+## Advance Parameters
+
+### Web Interface Language Codes (hl)
+
+Web Interface Language Codes
+```
 hl=af          Afrikaans
 hl=ak          Akan
 hl=sq          Albanian
@@ -152,11 +220,12 @@ hl=xh          Xhosa
 hl=yi          Yiddish
 hl=yo          Yoruba
 hl=zu          Zulu
+```
 
 
+## Search Language Codes (lr)
 
-Search Language Codes
-
+```
 lr=lang_af    Afrikaans
 lr=lang_ar    Arabic
 lr=lang_hy    Armenian
@@ -204,3 +273,18 @@ lr=lang_tr    Turkish
 lr=lang_uk    Ukrainian
 lr=lang_vi    Vietnamese
 ```
+
+## Credits
+
+This package was created and maintained by [Serply Inc](https://github.com/serply-inc).
+
+
+## Report Bugs
+
+Report bugs at https://github.com/serply-inc/serply-python/issues.
+
+If you are reporting a bug, please include:
+
+*   Your operating system name and version.
+*   Any details about your workflow that might be helpful in troubleshooting.
+*   Detailed steps to reproduce the bug.
