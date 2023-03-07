@@ -244,7 +244,6 @@ class Serply(object):
         self,
         keyword: str,
         num: int = 10,
-        engine: str = "google",
         hl="lang_en",
         gl="us",
         lr="lang_en",
@@ -268,19 +267,17 @@ class Serply(object):
         url = self.__generate_url__(
             keyword=keyword,
             num=num,
-            engine=engine,
             hl=hl,
             gl=gl,
             lr=lr,
+            endpoint="video",
             *args,
             **kwargs,
         )
         self.logger.debug(f"Performing search with {locals()}")
         return self.__make_request__(url=url)
 
-    async def video_async(
-        self, keyword: str, num: int = 10, *args, **kwargs
-    ) -> dict:
+    async def video_async(self, keyword: str, num: int = 10, *args, **kwargs) -> dict:
         """
             search for videos
             https://www.seoquake.com/blog/google-search-param/ for guidance on params
@@ -299,6 +296,67 @@ class Serply(object):
 
         url = self.__generate_url__(
             keyword=keyword, num=num, endpoint="video", *args, **kwargs
+        )
+
+        self.logger.debug(f"Performing async search with {locals()}")
+        return await self.__make_request_async__(url=url)
+
+    def image(
+        self,
+        keyword: str,
+        num: int = 10,
+        hl="lang_en",
+        gl="us",
+        lr="lang_en",
+        *args,
+        **kwargs,
+    ) -> dict:
+        """
+            search for a images
+            https://www.seoquake.com/blog/google-search-param/ for guidance on params
+            https://webapps.stackexchange.com/questions/16047/how-to-restrict-a-google-search-to-results-of-a-specific-language
+        :param keyword: str: keywords to search for
+        :param num: int: number of results to return (max 100, defaults to 10)
+        :param start: int: start index for results (defaults to 0)
+        :param lr: str: language code to use for search (defaults to en)
+        :param hl: str: web interface language lang_xx (defaults to lang_en)
+        :param cr: str: country code to use countrXX for search (e.g countryUS, countryCA, countryGB)
+        :param gl: str: geolocation country code (xx) to perform search (e.g 'us', 'ca', 'gb')
+        :param loc: str: find results for a given area (e.g. "new york", "san francisco", "london)
+        :return: dict: response from API
+        """
+        url = self.__generate_url__(
+            keyword=keyword,
+            num=num,
+            hl=hl,
+            gl=gl,
+            lr=lr,
+            endpoint="image",
+            *args,
+            **kwargs,
+        )
+        self.logger.debug(f"Performing search with {locals()}")
+        return self.__make_request__(url=url)
+
+    async def image_async(self, keyword: str, num: int = 10, *args, **kwargs) -> dict:
+        """
+            search for images
+            https://www.seoquake.com/blog/google-search-param/ for guidance on params
+            https://webapps.stackexchange.com/questions/16047/how-to-restrict-a-google-search-to-results-of-a-specific-language
+        :param keyword: str: keywords to search for
+        :param num: int: number of results to return (max 100, defaults to 10)
+        :param start: int: start index for results (defaults to 0)
+        :param lr: str: language code to use for search (defaults to en)
+        :param hl: str: web interface language lang_xx (defaults to lang_en)
+        :param cr: str: country code to use countrXX for search (e.g countryUS, countryCA, countryGB)
+        :param gl: str: geolocation country code (xx) to perform search (e.g 'us', 'ca', 'gb')
+        :param loc: str: find results for a given area (e.g. "new york", "san francisco", "london)
+        :return: dict: response from API
+        """
+        results = {}
+
+        url = self.__generate_url__(
+            keyword=keyword, num=num, endpoint="image", *args, **kwargs
         )
 
         self.logger.debug(f"Performing async search with {locals()}")

@@ -26,7 +26,9 @@ def test_generate_video_search_url_start():
 
 
 def test_generate_video_search_url_start_gl():
-    url = serply.__generate_url__(keyword="smart phone", start=33, gl="de", endpoint="video")
+    url = serply.__generate_url__(
+        keyword="smart phone", start=33, gl="de", endpoint="video"
+    )
     assert url == "https://api.serply.io/v1/video/q=smart+phone&num=10&start=33&gl=de"
 
 
@@ -35,19 +37,21 @@ def test_generate_video_search_bing_url_num_100():
     assert url == "https://api.serply.io/v1/video/q=how+to+cook&num=100"
 
 
-def test_generate_simple_search_bing_hl():
-    url = serply.__generate_url__(keyword="iphone drop test", hl="lang_en", endpoint="video")
+def test_generate_simple_video_search_hl_en():
+    url = serply.__generate_url__(
+        keyword="iphone drop test", hl="lang_en", endpoint="video"
+    )
     assert url == "https://api.serply.io/v1/video/q=iphone+drop+test&num=10&hl=lang_en"
 
 
-def test_simple_search_default():
+def test_simple_video_search_default():
     results = serply.video(keyword="iphone+reviews")
     assert results
     assert "results" in results
     assert len(results["results"]) > 0
 
 
-def test_simple_search_in_spanish():
+def test_simple_video_search_in_spanish():
     results = serply.video(keyword="best android phone", lr="lang_es")
     assert results
     assert "results" in results
@@ -63,7 +67,7 @@ def test_simple_search_in_spanish():
             return
 
 
-def test_simple_search_in_interface_german():
+def test_simple_video_search_in_interface_german():
     results = serply.video(keyword="music videos", hl="lang_de", gl="de")
     assert results
     assert "results" in results
@@ -78,14 +82,14 @@ def test_simple_search_in_interface_german():
             return
 
 
-def test_simple_search_bing():
-    results = serply.video(keyword="cooking shows", engine="bing")
+def test_simple_video_search_cooking_shows():
+    results = serply.video(keyword="cooking shows")
     assert results
     assert "results" in results
     assert len(results["results"]) > 0
 
 
-def test_search_with_num():
+def test_video_search_with_num():
     results = serply.video(keyword="funny tictok", num=30)
     assert results
     assert "results" in results
@@ -93,14 +97,14 @@ def test_search_with_num():
 
 
 # test async versions
-def test_simple_search_default_async():
+def test_video_simple_search_default_async():
     results = asyncio.run(serply.video_async(keyword="best phone camera"))
     assert results
     assert "results" in results
     assert len(results["results"]) > 0
 
 
-def test_simple_search_in_spanish_async():
+def test_simple_video_search_in_spanish_async():
     results = asyncio.run(serply.video_async(keyword="life hacks", lr="lang_es"))
     assert results
     assert "results" in results
@@ -115,8 +119,10 @@ def test_simple_search_in_spanish_async():
             return
 
 
-def test_simple_search_in_interface_german_async():
-    results = asyncio.run(serply.video_async(keyword="viral videos", hl="lang_de", gl="de"))
+def test_simple_video_search_in_interface_german_async():
+    results = asyncio.run(
+        serply.video_async(keyword="viral videos", hl="lang_de", gl="de")
+    )
     assert results
     assert "results" in results
     assert len(results["results"]) > 0
@@ -130,14 +136,14 @@ def test_simple_search_in_interface_german_async():
             return
 
 
-def test_simple_search_bing_async():
-    results = asyncio.run(serply.video_async(keyword="try not to laugh", engine="bing"))
+def test_simple_video_search_async():
+    results = asyncio.run(serply.video_async(keyword="try not to laugh"))
     assert results
     assert "results" in results
     assert len(results["results"]) > 0
 
 
-def test_search_with_num_async():
+def test_video_search_with_num_async():
     results = asyncio.run(serply.video_async(keyword="wedding songs", num=30))
     assert results
     assert "results" in results

@@ -73,6 +73,14 @@ Basic video search for `smart phone reviews`
 results = serply.video('smart phone reviews')
 ```
 
+### Image Search
+
+Basic image search for `coffee drinks`
+
+```python
+results = serply.image('coffee drinks')
+```
+
 ### Jobs Search
 
 Basic Job search for `nurse practitioner`
