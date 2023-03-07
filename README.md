@@ -81,6 +81,14 @@ Basic image search for `coffee drinks`
 results = serply.image('coffee drinks')
 ```
 
+### Product Search
+
+Basic image search for `iphones`
+
+```python
+results = serply.product('coffee drinks')
+```
+
 ### Jobs Search
 
 Basic Job search for `nurse practitioner`

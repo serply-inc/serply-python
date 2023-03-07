@@ -93,7 +93,10 @@ class Serply(object):
             return f"{self.base_url}{self.api_version}/job/search/{urlencode(params)}"
         elif endpoint == "news":
             return f"{self.base_url}{self.api_version}/news/{urlencode(params)}"
-        elif endpoint == "products":
+        elif endpoint == "product":
+            # product doesn't take num
+            if "num" in params:
+                del params["num"]
             return (
                 f"{self.base_url}{self.api_version}/product/search/{urlencode(params)}"
             )
@@ -274,7 +277,7 @@ class Serply(object):
             *args,
             **kwargs,
         )
-        self.logger.debug(f"Performing search with {locals()}")
+        self.logger.debug(f"Performing video search with {locals()}")
         return self.__make_request__(url=url)
 
     async def video_async(self, keyword: str, num: int = 10, *args, **kwargs) -> dict:
@@ -298,7 +301,7 @@ class Serply(object):
             keyword=keyword, num=num, endpoint="video", *args, **kwargs
         )
 
-        self.logger.debug(f"Performing async search with {locals()}")
+        self.logger.debug(f"Performing video async search with {locals()}")
         return await self.__make_request_async__(url=url)
 
     def image(
@@ -335,7 +338,7 @@ class Serply(object):
             *args,
             **kwargs,
         )
-        self.logger.debug(f"Performing search with {locals()}")
+        self.logger.debug(f"Performing image search with {locals()}")
         return self.__make_request__(url=url)
 
     async def image_async(self, keyword: str, num: int = 10, *args, **kwargs) -> dict:
@@ -359,7 +362,49 @@ class Serply(object):
             keyword=keyword, num=num, endpoint="image", *args, **kwargs
         )
 
-        self.logger.debug(f"Performing async search with {locals()}")
+        self.logger.debug(f"Performing image async search with {locals()}")
+        return await self.__make_request_async__(url=url)
+
+    def product(
+        self,
+        keyword: str,
+        num: int = 10,
+        *args,
+        **kwargs,
+    ) -> dict:
+        """
+            search for products
+            https://www.seoquake.com/blog/google-search-param/ for guidance on params
+            https://webapps.stackexchange.com/questions/16047/how-to-restrict-a-google-search-to-results-of-a-specific-language
+        :param keyword: str: keywords to search for
+        :param num: int: number of results to return (max 100, defaults to 10)
+        :return: dict: response from API
+        """
+        url = self.__generate_url__(
+            keyword=keyword,
+            num=num,
+            endpoint="product",
+            *args,
+            **kwargs,
+        )
+        self.logger.debug(f"Performing product search with {locals()}")
+        return self.__make_request__(url=url)
+
+    async def product_async(self, keyword: str, *args, **kwargs) -> dict:
+        """
+            search for products
+            https://www.seoquake.com/blog/google-search-param/ for guidance on params
+            https://webapps.stackexchange.com/questions/16047/how-to-restrict-a-google-search-to-results-of-a-specific-language
+        :param keyword: str: keywords to search for
+        :return: dict: response from API
+        """
+        results = {}
+
+        url = self.__generate_url__(
+            keyword=keyword, endpoint="product", *args, **kwargs
+        )
+
+        self.logger.debug(f"Performing product async search with {locals()}")
         return await self.__make_request_async__(url=url)
 
     def news(
