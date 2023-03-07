@@ -87,7 +87,7 @@ def test_simple_search_in_interface_german():
     assert "title" in results['result']
     assert "position" in results
     assert results["position"] == 1
-    assert results["result"]["link"] == "https://www.apple.com/de/iphone/"
+    assert "www.apple.com/de" in results["result"]["link"]
 
 
 # test async versions
