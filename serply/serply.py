@@ -3,6 +3,7 @@ import platform
 import requests
 import aiohttp
 import logging
+from typing import Dict
 from . import __version__
 from .consts import PROXY_LOCATIONS
 from urllib.parse import urlencode, unquote
@@ -82,8 +83,18 @@ class Serply(object):
         if "loc" in kwargs and kwargs["loc"]:
             params["loc"] = kwargs["loc"]
 
-        if endpoint == "news":
+        if endpoint == "image":
+            return f"{self.base_url}{self.api_version}/image/{urlencode(params)}"
+        elif endpoint == "video":
+            return f"{self.base_url}{self.api_version}/video/{urlencode(params)}"
+        elif endpoint == "scholar":
+            return f"{self.base_url}{self.api_version}/scholar/{urlencode(params)}"
+        elif endpoint == "job":
+            return f"{self.base_url}{self.api_version}/job/search/{urlencode(params)}"
+        elif endpoint == "news":
             return f"{self.base_url}{self.api_version}/news/{urlencode(params)}"
+        elif endpoint == "products":
+            return f"{self.base_url}{self.api_version}/product/search/{urlencode(params)}"
         else:
             # default to search
             if "engine" in kwargs and kwargs["engine"].lower() in ["bing", "b"]:
@@ -92,8 +103,75 @@ class Serply(object):
                 # defaults to google
                 return f"{self.base_url}{self.api_version}/search/{urlencode(params)}"
 
+    def __make_request__(self, url: str, method: str = "get", *args, **kwargs) -> Dict:
+        """
+            make a request to the API
+        :param url: str: url to make request to
+        :param method: str: method to use for request (defaults to get) [get, post]
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        results = {}
+        start = time.time()
+        if method.lower() == "post":
+            resp = self.session.post(url, *args, **kwargs)
+        else:
+            resp = self.session.get(url, *args, **kwargs)
+
+        if resp.status_code == 200:
+            results = resp.json()
+        else:
+            self.logger.error(f"Error making request to {method} {url} status code: {resp.status_code}")
+            results = {"error": f"Error making request to {method} {url} status code: {resp.status_code}"}
+
+        end = time.time()
+
+        self.logger.debug(f"Request took {end - start} seconds")
+        results['request_time'] = end - start
+
+        return results
+
+    async def __make_request_async__(self, url: str, method: str = "get", *args, **kwargs) -> Dict:
+        """
+            make a request to the API
+        :param url: str: url to make request to
+        :param method: str: method to use for request (defaults to get) [get, post]
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        results = {}
+        start = time.time()
+        async with aiohttp.ClientSession(headers=self.headers) as session:
+            if method.lower() == "post":
+                async with session.post(url, *args, **kwargs) as resp:
+                    if resp.status != 200:
+                        self.logger.error(f"Error making request to {method} {url} status code: {resp.status}")
+                    resp.raise_for_status()
+                    results = await resp.json()
+            else:
+                async with session.get(url) as resp:
+                    if resp.status != 200:
+                        self.logger.error(f"Error making request to {method} {url} status code: {resp.status}")
+                    resp.raise_for_status()
+                    results = await resp.json()
+
+        end = time.time()
+        self.logger.debug(f"Request took {end - start} seconds")
+        results['request_time'] = end - start
+        return results
+
     def search(
-        self, keyword: str, num: int = 10, engine: str = "google", *args, **kwargs
+        self,
+        keyword: str,
+        num: int = 10,
+        engine: str = "google",
+        hl="lang_en",
+        gl="us",
+        lr="lang_en",
+        *args,
+        **kwargs,
     ) -> dict:
         """
             search for a product
@@ -110,24 +188,18 @@ class Serply(object):
         :param loc: str: find results for a given area (e.g. "new york", "san francisco", "london)
         :return: dict: response from API
         """
-        results = {}
         url = self.__generate_url__(
-            keyword=keyword, num=num, engine=engine, *args, **kwargs
+            keyword=keyword,
+            num=num,
+            engine=engine,
+            hl=hl,
+            gl=gl,
+            lr=lr,
+            *args,
+            **kwargs,
         )
-
-        start = time.time()
-        resp = self.session.get(url)
-        end = time.time()
-        self.logger.debug(f"Search took {end - start} seconds")
-
-        if resp.status_code != 200:
-            self.logger.error(f"Error {resp.status_code} {resp.text}")
-            return {}
-
-        results = resp.json()
-        results["real_time"] = end - start
-
-        return resp.json()
+        self.logger.debug(f"Performing search with {locals()}")
+        return self.__make_request__(url=url)
 
     async def search_async(
         self, keyword: str, num: int = 10, engine: str = "google", *args, **kwargs
@@ -153,17 +225,8 @@ class Serply(object):
             keyword=keyword, num=num, engine=engine, *args, **kwargs
         )
 
-        start = time.time()
-        async with aiohttp.ClientSession(headers=self.headers) as session:
-            async with session.get(url) as resp:
-                resp.raise_for_status()
-                text = await resp.text()
-                results = await resp.json()
-
-        end = time.time()
-        self.logger.debug(f"Search took {end - start} seconds")
-        results["real_time"] = end - start
-        return results
+        self.logger.debug(f"Performing async search with {locals()}")
+        return await self.__make_request_async__(url=url)
 
     def news(
         self, keyword: str, num: int = 10, engine: str = "google", *args, **kwargs
@@ -188,19 +251,8 @@ class Serply(object):
             keyword=keyword, num=num, endpoint="news", engine=engine, *args, **kwargs
         )
 
-        start = time.time()
-        resp = self.session.get(url)
-        end = time.time()
-        self.logger.debug(f"News took {end - start} seconds")
-
-        if resp.status_code != 200:
-            self.logger.error(f"Error {resp.status_code} {resp.text}")
-            return {}
-
-        results = resp.json()
-        results["real_time"] = end - start
-
-        return resp.json()
+        self.logger.debug(f"Performing news search with {locals()}")
+        return self.__make_request__(url=url)
 
     async def news_async(
         self, keyword: str, num: int = 10, engine: str = "google", *args, **kwargs
@@ -226,14 +278,58 @@ class Serply(object):
             keyword=keyword, num=num, endpoint="news", engine=engine, *args, **kwargs
         )
 
-        start = time.time()
-        async with aiohttp.ClientSession(headers=self.headers) as session:
-            async with session.get(url) as resp:
-                resp.raise_for_status()
-                text = await resp.text()
-                results = await resp.json()
+        self.logger.debug(f"Performing news async search with {locals()}")
+        return await self.__make_request_async__(url=url)
 
-        end = time.time()
-        self.logger.debug(f"News took {end - start} seconds")
-        results["real_time"] = end - start
-        return results
+    def job(
+        self, keyword: str, num: int = 10, engine: str = "google", *args, **kwargs
+    ) -> dict:
+        """
+            search for jobs
+            https://www.seoquake.com/blog/google-search-param/ for guidance on params
+            https://webapps.stackexchange.com/questions/16047/how-to-restrict-a-google-search-to-results-of-a-specific-language
+        :param keyword: str: keywords to search for
+        :param num: int: number of results to return (max 100, defaults to 10)
+        :param engine: str: search engine to use (defaults to google) [google, bing]
+        :param start: int: start index for results (defaults to 0)
+        :param lr: str: language code to use for search (defaults to en)
+        :param hl: str: web interface language lang_xx (defaults to lang_en)
+        :param cr: str: country code to use countrXX for search (e.g countryUS, countryCA, countryGB)
+        :param gl: str: geolocation country code (xx) to perform search (e.g 'us', 'ca', 'gb')
+        :param loc: str: find results for a given area (e.g. "new york", "san francisco", "london)
+        :return: dict: response from API
+        """
+        results = {}
+        url = self.__generate_url__(
+            keyword=keyword, num=num, endpoint="job", engine=engine, *args, **kwargs
+        )
+
+        self.logger.debug(f"Performing job search with {locals()}")
+        return self.__make_request__(url=url)
+
+    async def job_async(
+        self, keyword: str, num: int = 10, engine: str = "google", *args, **kwargs
+    ) -> dict:
+        """
+            search for jobs
+            https://www.seoquake.com/blog/google-search-param/ for guidance on params
+            https://webapps.stackexchange.com/questions/16047/how-to-restrict-a-google-search-to-results-of-a-specific-language
+        :param keyword: str: keywords to search for
+        :param num: int: number of results to return (max 100, defaults to 10)
+        :param engine: str: search engine to use (defaults to google) [google, bing]
+        :param start: int: start index for results (defaults to 0)
+        :param lr: str: language code to use for search (defaults to en)
+        :param hl: str: web interface language lang_xx (defaults to lang_en)
+        :param cr: str: country code to use countrXX for search (e.g countryUS, countryCA, countryGB)
+        :param gl: str: geolocation country code (xx) to perform search (e.g 'us', 'ca', 'gb')
+        :param loc: str: find results for a given area (e.g. "new york", "san francisco", "london)
+        :return: dict: response from API
+        """
+        results = {}
+
+        url = self.__generate_url__(
+            keyword=keyword, num=num, endpoint="job", engine=engine, *args, **kwargs
+        )
+
+        self.logger.debug(f"Performing job async search with {locals()}")
+        return await self.__make_request_async__(url=url)
