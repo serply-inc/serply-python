@@ -282,53 +282,41 @@ class Serply(object):
         return await self.__make_request_async__(url=url)
 
     def job(
-        self, keyword: str, num: int = 10, engine: str = "google", *args, **kwargs
+        self, keyword: str, num: int = 10, engine: str = "google", start: int = 0
     ) -> dict:
         """
             search for jobs
-            https://www.seoquake.com/blog/google-search-param/ for guidance on params
-            https://webapps.stackexchange.com/questions/16047/how-to-restrict-a-google-search-to-results-of-a-specific-language
+        NOTE: right now job only supports the English interface has to be in US or Canada
         :param keyword: str: keywords to search for
         :param num: int: number of results to return (max 100, defaults to 10)
         :param engine: str: search engine to use (defaults to google) [google, bing]
         :param start: int: start index for results (defaults to 0)
-        :param lr: str: language code to use for search (defaults to en)
-        :param hl: str: web interface language lang_xx (defaults to lang_en)
-        :param cr: str: country code to use countrXX for search (e.g countryUS, countryCA, countryGB)
-        :param gl: str: geolocation country code (xx) to perform search (e.g 'us', 'ca', 'gb')
-        :param loc: str: find results for a given area (e.g. "new york", "san francisco", "london)
         :return: dict: response from API
         """
         results = {}
         url = self.__generate_url__(
-            keyword=keyword, num=num, endpoint="job", engine=engine, *args, **kwargs
+            keyword=keyword, num=num, endpoint="job", engine=engine, start=start
         )
 
         self.logger.debug(f"Performing job search with {locals()}")
         return self.__make_request__(url=url)
 
     async def job_async(
-        self, keyword: str, num: int = 10, engine: str = "google", *args, **kwargs
+        self, keyword: str, num: int = 10, engine: str = "google", start: int = 0
     ) -> dict:
         """
             search for jobs
-            https://www.seoquake.com/blog/google-search-param/ for guidance on params
-            https://webapps.stackexchange.com/questions/16047/how-to-restrict-a-google-search-to-results-of-a-specific-language
+        NOTE: right now job only supports the English interface has to be in US or Canada
         :param keyword: str: keywords to search for
         :param num: int: number of results to return (max 100, defaults to 10)
         :param engine: str: search engine to use (defaults to google) [google, bing]
         :param start: int: start index for results (defaults to 0)
-        :param lr: str: language code to use for search (defaults to en)
-        :param hl: str: web interface language lang_xx (defaults to lang_en)
-        :param cr: str: country code to use countrXX for search (e.g countryUS, countryCA, countryGB)
-        :param gl: str: geolocation country code (xx) to perform search (e.g 'us', 'ca', 'gb')
-        :param loc: str: find results for a given area (e.g. "new york", "san francisco", "london)
         :return: dict: response from API
         """
         results = {}
 
         url = self.__generate_url__(
-            keyword=keyword, num=num, endpoint="job", engine=engine, *args, **kwargs
+            keyword=keyword, num=num, endpoint="job", engine=engine, start=start
         )
 
         self.logger.debug(f"Performing job async search with {locals()}")
