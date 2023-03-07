@@ -59,11 +59,36 @@ Paging results (start at 20th result, default to 0)
 results = serply.search('iphone 15 specs', start=20)
 ```
 
-Perform search in a specific language (Spanish)
+Perform search in a [specific language](#search-language-codes--lr-) (Spanish) 
 
 ```python
 results = serply.search(keyword="iphone", lr="lang_es")
 ```
+
+### Video Search
+
+Basic video search for `smart phone reviews`
+
+```python
+results = serply.video('smart phone reviews')
+```
+
+### Jobs Search
+
+Basic Job search for `nurse practitioner`
+
+```python
+resources = serply.job('nurse practitioner')
+```
+
+### News Search
+
+Basic News search for `bitcoin`
+
+```python
+results = serply.news('bitcoin')
+```
+
 
 ## Advance Parameters
 
