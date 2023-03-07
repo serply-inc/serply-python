@@ -31,6 +31,7 @@ This SDK implements the following Serply API endpoints:
 - [`/v1/video/{query}`](#video-search) - [Video Search](#video-search) - Search for videos
 - [`/v1/search/{query}`](#image-search) - [Image Search](#image-search) - Search for images
 - [`/v1/news/{query}`](#news-search) - [News Search](#news-search) - Search for news
+- [`/v1/serp/{query}`](#serp-search) - [SERP Search](#serp-search) - Search for domain SERPs
 - [`/v1/job/crawl/{query}`](#crawl-search) - [Crawl Search](#crawl-search) - Search for web pages and HTML for custom parsing
 - [`/v1/product/search/{query}`](#product-search) - [Product Search](#product-search) - Search for products
 - [`/v1/job/search/{query}`](#jobs-search) - [Jobs Search](#jobs-search) - Search for jobs
@@ -116,6 +117,14 @@ Basic News search for `bitcoin`
 
 ```python
 results = serply.news('bitcoin')
+```
+
+### SERP Search
+
+Basic SERP search for `bitcoin`
+
+```python
+results = serply.serp('bitcoin', domain='bitcoin.org')
 ```
 
 ### Crawl Search
