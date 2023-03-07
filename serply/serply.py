@@ -82,6 +82,10 @@ class Serply(object):
             params["cr"] = kwargs["cr"]
         if "loc" in kwargs and kwargs["loc"]:
             params["loc"] = kwargs["loc"]
+        if "domain" in kwargs and kwargs["domain"]:
+            params["domain"] = kwargs["domain"]
+        if "website" in kwargs and kwargs["website"]:
+            params["website"] = kwargs["website"]
 
         if endpoint == "image":
             return f"{self.base_url}{self.api_version}/image/{urlencode(params)}"
@@ -102,6 +106,12 @@ class Serply(object):
             )
         elif endpoint == "crawl":
             return f"{self.base_url}{self.api_version}/crawl/{urlencode(params)}"
+        elif endpoint == "serp":
+            if "domain" not in params and "website" not in params:
+                raise ValueError(
+                    "domain or website is required for the SERP endpoint."
+                )
+            return f"{self.base_url}{self.api_version}/serp/{urlencode(params)}"
         else:
             # default to search
             if "engine" in kwargs and kwargs["engine"].lower() in ["bing", "b"]:
@@ -568,4 +578,75 @@ class Serply(object):
         )
 
         self.logger.debug(f"Performing async crawl with {locals()}")
+        return await self.__make_request_async__(url=url)
+
+    def serp(
+        self,
+        keyword: str,
+        domain: str,
+        num: int = 100,
+        engine: str = "google",
+        hl="lang_en",
+        gl="us",
+        lr="lang_en",
+        *args,
+        **kwargs,
+    ) -> dict:
+        """
+            perform a search also returning back the HTML for custom parsing
+            https://www.seoquake.com/blog/google-search-param/ for guidance on params
+            https://webapps.stackexchange.com/questions/16047/how-to-restrict-a-google-search-to-results-of-a-specific-language
+        :param keyword: str: keywords to search for
+        :param domain: str: domain to find SERP results for
+        :param num: int: number of results to return (max 100)
+        :param engine: str: search engine to use (defaults to google) [google, bing]
+        :param start: int: start index for results (defaults to 0)
+        :param lr: str: language code to use for search (defaults to en)
+        :param hl: str: web interface language lang_xx (defaults to lang_en)
+        :param cr: str: country code to use countrXX for search (e.g countryUS, countryCA, countryGB)
+        :param gl: str: geolocation country code (xx) to perform search (e.g 'us', 'ca', 'gb')
+        :param loc: str: find results for a given area (e.g. "new york", "san francisco", "london)
+        :return: dict: response from API
+        """
+        url = self.__generate_url__(
+            keyword=keyword,
+            domain=domain,
+            num=num,
+            engine=engine,
+            hl=hl,
+            gl=gl,
+            lr=lr,
+            endpoint="serp",
+            *args,
+            **kwargs,
+        )
+        self.logger.debug(f"Performing serp with {locals()}")
+        return self.__make_request__(url=url)
+
+    async def serp_async(
+        self, keyword: str, domain: str, num: int = 100, engine: str = "google", *args, **kwargs
+    ) -> dict:
+        """
+            perform a search asynchronously returning back the HTML for custom parsing
+            https://www.seoquake.com/blog/google-search-param/ for guidance on params
+            https://webapps.stackexchange.com/questions/16047/how-to-restrict-a-google-search-to-results-of-a-specific-language
+        :param keyword: str: keywords to search for
+        :param domain: str: domain to find SERP results for
+        :param num: int: number of results to return (max 100)
+        :param engine: str: search engine to use (defaults to google) [google, bing]
+        :param start: int: start index for results (defaults to 0)
+        :param lr: str: language code to use for search (defaults to en)
+        :param hl: str: web interface language lang_xx (defaults to lang_en)
+        :param cr: str: country code to use countrXX for search (e.g countryUS, countryCA, countryGB)
+        :param gl: str: geolocation country code (xx) to perform search (e.g 'us', 'ca', 'gb')
+        :param loc: str: find results for a given area (e.g. "new york", "san francisco", "london)
+        :return: dict: response from API
+        """
+        results = {}
+
+        url = self.__generate_url__(
+            keyword=keyword, num=num, domain=domain, endpoint="serp", *args, **kwargs
+        )
+
+        self.logger.debug(f"Performing async serp with {locals()}")
         return await self.__make_request_async__(url=url)
