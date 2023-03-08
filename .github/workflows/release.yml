@@ -16,6 +16,7 @@ jobs:
       if: success() || failure()
 
   deploy:
+    runs-on: ubuntu-latest
     if: steps.tests.outputs.exit_code == 0
     steps:
       - name: Publish a Python distribution to PyPI
