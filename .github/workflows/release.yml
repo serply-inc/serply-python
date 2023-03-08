@@ -9,6 +9,8 @@ jobs:
   tests:
     uses: ./.github/workflows/tests.yml  # use the callable tests job to run tests
   deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: release
     needs: [tests]  # require tests to pass before deploy runs
     steps:
