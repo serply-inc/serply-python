@@ -6,7 +6,7 @@ name: Run Tests
 on:
   workflow_call:
     secrets:
-      api-key:
+      SERPLY_API_KEY:
         required: true
   push:
     branches: [ "main" ]
@@ -39,7 +39,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       env:
-        API_KEY: ${{ secrets.api_key }}
+        API_KEY: ${{ secrets.SERPLY_API_KEY }}
       run: |
         coverage run -m pytest tests
         coverage report -m
