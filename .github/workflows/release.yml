@@ -13,9 +13,10 @@ jobs:
       uses: ./.github/workflows/tests.yml  # use the callable tests job to run tests
       with:
         api_key: ${{ secrets.SERPLY_API_KEY }}
+      if: success() || failure()
+
   deploy:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: steps.tests.outputs.exit_code == 0
     steps:
       - name: Publish a Python distribution to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
