@@ -6,7 +6,7 @@ name: Run Tests
 on:
   workflow_call:
     secrets:
-      envPAT:
+      SERPLY_API_KEY:
         required: true
   push:
     branches: [ "main" ]
