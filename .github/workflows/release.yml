@@ -8,6 +8,8 @@ on:
 jobs:
   tests:
     uses: ./.github/workflows/tests.yml  # use the callable tests job to run tests
+    with:
+      api_key: ${{ secrets.SERPLY_API_KEY }}
   deploy:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
