@@ -5,6 +5,9 @@ name: Run Tests
 
 on:
   workflow_call:
+    secrets:
+      envPAT:
+        required: true
   push:
     branches: [ "main" ]
   pull_request:
