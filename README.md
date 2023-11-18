@@ -17,6 +17,7 @@ Serply is a Python SDK for the Serply API. It provides a simple interface to the
     - [Web Search with options](#web-search-with-options)
   - [Video Search](#video-search)
   - [Image Search](#image-search)
+  - [Maps Search](#maps-search)
   - [Product Search](#product-search)
   - [Jobs Search](#jobs-search)
   - [News Search](#news-search)
@@ -49,7 +50,8 @@ This SDK implements the following Serply API endpoints:
 
 - [`/v1/search/{query}`](#web-search) - [Web Search](#web-search) - Search for web pages
 - [`/v1/video/{query}`](#video-search) - [Video Search](#video-search) - Search for videos
-- [`/v1/search/{query}`](#image-search) - [Image Search](#image-search) - Search for images
+- [`/v1/image/{query}`](#image-search) - [Image Search](#image-search) - Search for images
+- [`/v1/maps/{query}`](#maps-search) - [Maps Search](#maps-search) - Search Maps
 - [`/v1/news/{query}`](#news-search) - [News Search](#news-search) - Search for news
 - [`/v1/serp/{query}`](#serp-search) - [SERP Search](#serp-search) - Search for domain SERPs
 - [`/v1/job/crawl/{query}`](#crawl-search) - [Crawl Search](#crawl-search) - Search for web pages and HTML for custom parsing
@@ -113,6 +115,14 @@ Basic image search for `coffee drinks`
 
 ```python
 results = serply.image('coffee drinks')
+```
+
+### Maps Search
+
+Basic image search for `coffee shops in portland`
+
+```python
+results = serply.maps('coffee shops in portland')
 ```
 
 ### Product Search
