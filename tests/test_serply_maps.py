@@ -45,9 +45,10 @@ def test_simple_search_maps_in_spanish():
 
     # expect one link to use https://www.apple.com/es/iphone/
     for place in results["places"]:
-        if description := place["description"]:
+        if "description" in place and place["description"]:
+            descriptions = place["description"]
             detected_language, confidence = langid.classify(
-                " ".join(description).encode("utf-8")
+                " ".join(descriptions).encode("utf-8")
             )
             if detected_language == "es":
                 assert True
@@ -61,9 +62,10 @@ def test_simple_search_maps_in_interface_german():
     assert len(results["places"]) > 0
 
     for place in results["places"]:
-        if description := place["description"]:
+       if "description" in place and place["description"]:
+            descriptions = place["description"]
             detected_language, confidence = langid.classify(
-                " ".join(description).encode("utf-8")
+                " ".join(descriptions).encode("utf-8")
             )
             if detected_language == "de":
                 assert True
@@ -86,9 +88,10 @@ def test_simple_search_maps_in_spanish_async():
     assert len(results["places"]) > 0
 
     for place in results["places"]:
-        if description := place["description"]:
+        if "description" in place and place["description"]:
+            descriptions = place["description"]
             detected_language, confidence = langid.classify(
-                " ".join(description).encode("utf-8")
+                " ".join(descriptions).encode("utf-8")
             )
             if detected_language == "es":
                 assert True
@@ -102,9 +105,10 @@ def test_simple_search_maps_in_interface_german_async():
     assert len(results["places"]) > 0
 
     for place in results["places"]:
-        if description := place["description"]:
+        if "description" in place and place["description"]:
+            descriptions = place["description"]
             detected_language, confidence = langid.classify(
-                " ".join(description).encode("utf-8")
+                " ".join(descriptions).encode("utf-8")
             )
             if detected_language == "de":
                 assert True
