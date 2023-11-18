@@ -73,7 +73,7 @@ def test_simple_serp_default_not_found():
 
 
 def test_simple_search_in_spanish():
-    results = serply.serp(keyword="iphone", lr="lang_es", domain="apple.com")
+    results = serply.serp(keyword="iphone", hl="es", lr="lang_es", gl="es", domain="apple.com")
     assert "result" in results
     assert "title" in results['result']
     assert "position" in results
@@ -82,7 +82,7 @@ def test_simple_search_in_spanish():
 
 
 def test_simple_search_in_interface_german():
-    results = serply.serp(keyword="iphone", hl="lang_de", gl="de", domain="apple.com")
+    results = serply.serp(keyword="iphone", hl="de", lr="lang_de", gl="de", domain="apple.com")
     assert "result" in results
     assert "title" in results['result']
     assert "position" in results

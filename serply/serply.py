@@ -666,8 +666,8 @@ class Serply(object):
         **kwargs,
     ) -> dict:
         """
-            search for jobs
-        NOTE: right now job only supports the English interface has to be in US or Canada
+            search places on Google Maps
+        :param keyword: str: keywords to search for, include location for local results
         :param keyword: str: keywords to search for
         :param num: int: number of results to return (max 100, defaults to 10)
         :param engine: str: search engine to use (defaults to google) [google, bing]
@@ -702,9 +702,8 @@ class Serply(object):
         **kwargs,
     ) -> dict:
         """
-            search for jobs
-        NOTE: right now job only supports the English interface has to be in US or Canada
-        :param keyword: str: keywords to search for
+            search places on Google Maps
+        :param keyword: str: keywords to search for, include location for local results
         :param num: int: number of results to return (max 100, defaults to 10)
         :param engine: str: search engine to use (defaults to google) [google, bing]
         :param start: int: start index for results (defaults to 0)
