@@ -97,6 +97,8 @@ class Serply(object):
             return f"{self.base_url}{self.api_version}/job/search/{urlencode(params)}"
         elif endpoint == "news":
             return f"{self.base_url}{self.api_version}/news/{urlencode(params)}"
+        elif endpoint == "maps":
+            return f"{self.base_url}{self.api_version}/maps/{urlencode(params)}"
         elif endpoint == "product":
             # product doesn't take num
             if "num" in params:
@@ -649,4 +651,78 @@ class Serply(object):
         )
 
         self.logger.debug(f"Performing async serp with {locals()}")
+        return await self.__make_request_async__(url=url)
+
+
+    def maps(
+        self, 
+        keyword: str, 
+        num: int = 10,
+        hl="lang_en",
+        gl="us",
+        lr="lang_en",
+        engine="google",
+        *args,
+        **kwargs,
+    ) -> dict:
+        """
+            search for jobs
+        NOTE: right now job only supports the English interface has to be in US or Canada
+        :param keyword: str: keywords to search for
+        :param num: int: number of results to return (max 100, defaults to 10)
+        :param engine: str: search engine to use (defaults to google) [google, bing]
+        :param start: int: start index for results (defaults to 0)
+        :return: dict: response from API
+        """
+        results = {}
+        url = self.__generate_url__(
+            keyword=keyword,
+            num=num,
+            engine=engine,
+            hl=hl,
+            gl=gl,
+            lr=lr,
+            endpoint="maps",
+            *args,
+            **kwargs,
+        )
+
+        self.logger.debug(f"Performing job search with {locals()}")
+        return self.__make_request__(url=url)
+
+    async def maps_async(
+        self, 
+        keyword: str, 
+        num: int = 10,
+        hl="lang_en",
+        gl="us",
+        lr="lang_en",
+        engine="google",
+        *args,
+        **kwargs,
+    ) -> dict:
+        """
+            search for jobs
+        NOTE: right now job only supports the English interface has to be in US or Canada
+        :param keyword: str: keywords to search for
+        :param num: int: number of results to return (max 100, defaults to 10)
+        :param engine: str: search engine to use (defaults to google) [google, bing]
+        :param start: int: start index for results (defaults to 0)
+        :return: dict: response from API
+        """
+        results = {}
+
+        url = self.__generate_url__(
+            keyword=keyword,
+            num=num,
+            engine=engine,
+            hl=hl,
+            gl=gl,
+            lr=lr,
+            endpoint="maps",
+            *args,
+            **kwargs,
+        )
+
+        self.logger.debug(f"Performing job async search with {locals()}")
         return await self.__make_request_async__(url=url)
