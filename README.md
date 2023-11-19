@@ -1,4 +1,4 @@
-![coverage badge](./coverage.svg)
+![coverage badge](https://raw.githubusercontent.com/serply-inc/serply-python/main/coverage.svg)
 
 
 ![serply logo](./images/serply_logo.png)
