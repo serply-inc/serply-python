@@ -1,4 +1,4 @@
-![coverage badge](./coverage.svg)
+![coverage badge](https://raw.githubusercontent.com/serply-inc/serply-python/main/coverage.svg)
 
 
 ![serply logo](./images/serply_logo.png)
@@ -23,6 +23,7 @@ Serply is a Python SDK for the Serply API. It provides a simple interface to the
   - [News Search](#news-search)
   - [SERP Search](#serp-search)
   - [Crawl Search](#crawl-search)
+  - [Scholar Search](#scholar-search)
 - [Advance Parameters](#advance-parameters)
   - [Web Interface Language Codes (hl)](#web-interface-language-codes-hl)
 - [Credits](#credits)
@@ -162,9 +163,15 @@ results = serply.serp('bitcoin', domain='bitcoin.org')
 Basic Crawl search for `workout routines`
 
 ```python
+results = serply.crawl('workout routines')
+```
+
+### Scholar Search
+
+Basic scholar search for `advance machine learning`
 
 ```python
-results = serply.crawl('workout routines')
+results = serply.scholar('advance machine learning')
 ```
 
 ## Advance Parameters

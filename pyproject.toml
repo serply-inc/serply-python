@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "serply"
-version = "0.1.1"
+version = "0.1.2"
 description = ""
 authors = ["Tuan Nguyen <tuan@tuangeek.com>"]
 readme = "README.md"
