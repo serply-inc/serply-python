@@ -726,3 +726,75 @@ class Serply(object):
 
         self.logger.debug(f"Performing job async search with {locals()}")
         return await self.__make_request_async__(url=url)
+
+    def scholar(
+        self,
+        keyword: str,
+        num: int = 10,
+        hl="lang_en",
+        gl="us",
+        lr="lang_en",
+        engine="google",
+        *args,
+        **kwargs,
+    ) -> dict:
+        """
+            search places on Google scholar
+        :param keyword: str: keywords to search for scholar
+        :param keyword: str: keywords to search for
+        :param num: int: number of results to return (max 100, defaults to 10)
+        :param engine: str: search engine to use (defaults to google) [google, bing]
+        :param start: int: start index for results (defaults to 0)
+        :return: dict: response from API
+        """
+        results = {}
+        url = self.__generate_url__(
+            keyword=keyword,
+            num=num,
+            engine=engine,
+            hl=hl,
+            gl=gl,
+            lr=lr,
+            endpoint="scholar",
+            *args,
+            **kwargs,
+        )
+
+        self.logger.debug(f"Performing job search with {locals()}")
+        return self.__make_request__(url=url)
+
+    async def scholar_async(
+        self,
+        keyword: str,
+        num: int = 10,
+        hl="lang_en",
+        gl="us",
+        lr="lang_en",
+        engine="google",
+        *args,
+        **kwargs,
+    ) -> dict:
+        """
+            search places on Google scholar
+        :param keyword: str: keywords to search for scholar
+        :param num: int: number of results to return (max 100, defaults to 10)
+        :param engine: str: search engine to use (defaults to google) [google, bing]
+        :param start: int: start index for results (defaults to 0)
+        :return: dict: response from API
+        """
+        results = {}
+
+        url = self.__generate_url__(
+            keyword=keyword,
+            num=num,
+            engine=engine,
+            hl=hl,
+            gl=gl,
+            lr=lr,
+            endpoint="maps",
+            *args,
+            **kwargs,
+        )
+
+        self.logger.debug(f"Performing job async search with {locals()}")
+        return await self.__make_request_async__(url=url)
