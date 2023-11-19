@@ -78,8 +78,6 @@ class Serply(object):
             params["hl"] = kwargs["hl"]
         if "cr" in kwargs and kwargs["cr"]:
             params["cr"] = kwargs["cr"]
-        if "cr" in kwargs and kwargs["cr"]:
-            params["cr"] = kwargs["cr"]
         if "loc" in kwargs and kwargs["loc"]:
             params["loc"] = kwargs["loc"]
         if "domain" in kwargs and kwargs["domain"]:

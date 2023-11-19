@@ -57,7 +57,7 @@ def test_simple_search_maps_in_spanish():
                 break
             
     # make sure found at least one es
-    assert found_one_es == True
+    assert found_one_es
 
 
 def test_simple_search_maps_in_interface_german():
@@ -77,7 +77,7 @@ def test_simple_search_maps_in_interface_german():
                 found_one_de = True
                 break
     # make sure found at least one es
-    assert found_one_de == True
+    assert found_one_de
 
 
 
@@ -106,7 +106,7 @@ def test_simple_search_maps_in_spanish_async():
                 found_one_es = True
                 break
     # make sure found at least one es
-    assert found_one_es == True
+    assert found_one_es
 
 
 def test_simple_search_maps_in_interface_german_async():
@@ -126,4 +126,12 @@ def test_simple_search_maps_in_interface_german_async():
                 found_one_de = True
                 break
     # make sure found at least one es
-    assert found_one_de == True
+    assert found_one_de
+
+
+
+def test_simple_search_loc_default():
+    results = serply.maps(keyword="apple store", loc="38.9419+-78.3020")
+    assert results
+    assert "places" in results
+    assert len(results["places"]) > 0

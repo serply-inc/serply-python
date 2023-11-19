@@ -100,7 +100,7 @@ def test_simple_search_default_async():
 
 
 def test_simple_search_in_spanish_async():
-    results = asyncio.run(serply.search_async(keyword="iphone", lr="lang_es"))
+    results = asyncio.run(serply.search_async(keyword="iphone", lr="lang_es", cr="countryES"))
     assert results
     assert "results" in results
     assert len(results["results"]) > 0
@@ -115,7 +115,7 @@ def test_simple_search_in_spanish_async():
 
 
 def test_simple_search_in_interface_german_async():
-    results = asyncio.run(serply.search_async(keyword="iphone", hl="lang_de", gl="de"))
+    results = asyncio.run(serply.search_async(keyword="iphone", hl="lang_de", gl="de", cr="countryDE"))
     assert results
     assert "results" in results
     assert len(results["results"]) > 0
