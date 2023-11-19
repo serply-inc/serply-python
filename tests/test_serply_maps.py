@@ -43,6 +43,7 @@ def test_simple_search_maps_in_spanish():
     assert "places" in results
     assert len(results["places"]) > 0
 
+    found_one_es = False
     # expect one link to use https://www.apple.com/es/iphone/
     for place in results["places"]:
         if "description" in place and place["description"]:
@@ -51,8 +52,11 @@ def test_simple_search_maps_in_spanish():
                 " ".join(descriptions).encode("utf-8")
             )
             if detected_language == "es":
-                assert True
-                return
+                found_one_es = True
+                break
+            
+    # make sure found at least one es
+    assert found_one_es == True
 
 
 def test_simple_search_maps_in_interface_german():
@@ -61,6 +65,7 @@ def test_simple_search_maps_in_interface_german():
     assert "places" in results
     assert len(results["places"]) > 0
 
+    found_one_de = False
     for place in results["places"]:
         if "description" in place and place["description"]:
             descriptions = place["description"]
@@ -68,8 +73,11 @@ def test_simple_search_maps_in_interface_german():
                 " ".join(descriptions).encode("utf-8")
             )
             if detected_language == "de":
-                assert True
-                return
+                found_one_de = True
+                break
+    # make sure found at least one es
+    assert found_one_de == True
+
 
 
 # test async versions
@@ -86,6 +94,7 @@ def test_simple_search_maps_in_spanish_async():
     assert "places" in results
     assert len(results["places"]) > 0
 
+    found_one_es = False
     for place in results["places"]:
         if "description" in place and place["description"]:
             descriptions = place["description"]
@@ -93,8 +102,10 @@ def test_simple_search_maps_in_spanish_async():
                 " ".join(descriptions).encode("utf-8")
             )
             if detected_language == "es":
-                assert True
-                return
+                found_one_es = True
+                break
+    # make sure found at least one es
+    assert found_one_es == True
 
 
 def test_simple_search_maps_in_interface_german_async():
@@ -103,6 +114,7 @@ def test_simple_search_maps_in_interface_german_async():
     assert "places" in results
     assert len(results["places"]) > 0
 
+    found_one_de = False
     for place in results["places"]:
         if "description" in place and place["description"]:
             descriptions = place["description"]
@@ -110,5 +122,7 @@ def test_simple_search_maps_in_interface_german_async():
                 " ".join(descriptions).encode("utf-8")
             )
             if detected_language == "de":
-                assert True
-                return
+                found_one_de = True
+                break
+    # make sure found at least one es
+    assert found_one_de == True
