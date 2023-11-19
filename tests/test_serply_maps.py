@@ -38,7 +38,7 @@ def test_simple_search_maps_default():
 
 
 def test_simple_search_maps_in_spanish():
-    results = serply.maps(keyword="iphone", lr="lang_es", gl="es")
+    results = serply.maps(keyword="restaurants in barcelona", hl="lang_es", gl="es", lr="es", cr="countryES")
     assert results
     assert "places" in results
     assert len(results["places"]) > 0
@@ -61,7 +61,7 @@ def test_simple_search_maps_in_spanish():
 
 
 def test_simple_search_maps_in_interface_german():
-    results = serply.maps(keyword="iphone", hl="lang_de", gl="de")
+    results = serply.maps(keyword="restaurants in berlin", hl="lang_de", gl="de", lr="de", cr="countryDE")
     assert results
     assert "places" in results
     assert len(results["places"]) > 0
@@ -83,14 +83,14 @@ def test_simple_search_maps_in_interface_german():
 
 # test async versions
 def test_simple_search_maps_default_async():
-    results = asyncio.run(serply.maps_async(keyword="iphone"))
+    results = asyncio.run(serply.maps_async(keyword="restaurants"))
     assert results
     assert "places" in results
     assert len(results["places"]) > 0
 
 
 def test_simple_search_maps_in_spanish_async():
-    results = asyncio.run(serply.maps_async(keyword="iphone", lr="lang_es", gl="es"))
+    results = asyncio.run(serply.maps_async(keyword="restaurants in barcelona", hl="lang_es", gl="es", lr="es", cr="countryES"))
     assert results
     assert "places" in results
     assert len(results["places"]) > 0
@@ -110,7 +110,7 @@ def test_simple_search_maps_in_spanish_async():
 
 
 def test_simple_search_maps_in_interface_german_async():
-    results = asyncio.run(serply.maps_async(keyword="iphone", hl="lang_de", gl="de"))
+    results = asyncio.run(serply.maps_async(keyword="restaurants in berlin", hl="lang_de", gl="de", lr="de", cr="countryDE"))
     assert results
     assert "places" in results
     assert len(results["places"]) > 0
