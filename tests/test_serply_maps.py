@@ -38,7 +38,7 @@ def test_simple_search_maps_default():
 
 
 def test_simple_search_maps_in_spanish():
-    results = serply.maps(keyword="iphone", lr="lang_es")
+    results = serply.maps(keyword="iphone", lr="lang_es", gl="es")
     assert results
     assert "places" in results
     assert len(results["places"]) > 0
@@ -51,6 +51,7 @@ def test_simple_search_maps_in_spanish():
             detected_language, confidence = langid.classify(
                 " ".join(descriptions).encode("utf-8")
             )
+
             if detected_language == "es":
                 found_one_es = True
                 break
@@ -89,7 +90,7 @@ def test_simple_search_maps_default_async():
 
 
 def test_simple_search_maps_in_spanish_async():
-    results = asyncio.run(serply.maps_async(keyword="iphone", lr="lang_es"))
+    results = asyncio.run(serply.maps_async(keyword="iphone", lr="lang_es", gl="es"))
     assert results
     assert "places" in results
     assert len(results["places"]) > 0
