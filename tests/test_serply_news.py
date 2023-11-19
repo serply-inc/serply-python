@@ -1,6 +1,4 @@
 import os
-import unittest
-import pytest
 import asyncio
 import langid
 from serply.serply import Serply

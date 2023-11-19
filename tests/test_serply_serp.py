@@ -1,8 +1,5 @@
 import os
-import unittest
-import pytest
 import asyncio
-import langid
 from serply.serply import Serply
 
 API_KEY = os.getenv("API_KEY", None)
@@ -42,6 +39,8 @@ def test_simple_serp_default_without_domain():
     # should raise value error without domain or website
     try:
         results = serply.serp(keyword="android")
+        assert results
+        assert "result" in results
     except ValueError:
         pass
     except TypeError:
