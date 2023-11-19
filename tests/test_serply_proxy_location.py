@@ -1,6 +1,5 @@
 import os
 import asyncio
-import langid
 from serply.serply import Serply
 
 API_KEY = os.getenv("API_KEY", None)
