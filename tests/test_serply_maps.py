@@ -38,7 +38,13 @@ def test_simple_search_maps_default():
 
 
 def test_simple_search_maps_in_spanish():
-    results = serply.maps(keyword="restaurants in barcelona", hl="lang_es", gl="es", lr="es", cr="countryES")
+    results = serply.maps(
+        keyword="restaurants in barcelona",
+        hl="lang_es",
+        gl="es",
+        lr="es",
+        cr="countryES",
+    )
     assert results
     assert "places" in results
     assert len(results["places"]) > 0
@@ -55,13 +61,15 @@ def test_simple_search_maps_in_spanish():
             if detected_language == "es":
                 found_one_es = True
                 break
-            
+
     # make sure found at least one es
     assert found_one_es
 
 
 def test_simple_search_maps_in_interface_german():
-    results = serply.maps(keyword="restaurants in berlin", hl="lang_de", gl="de", lr="de", cr="countryDE")
+    results = serply.maps(
+        keyword="restaurants in berlin", hl="lang_de", gl="de", lr="de", cr="countryDE"
+    )
     assert results
     assert "places" in results
     assert len(results["places"]) > 0
@@ -80,7 +88,6 @@ def test_simple_search_maps_in_interface_german():
     assert found_one_de
 
 
-
 # test async versions
 def test_simple_search_maps_default_async():
     results = asyncio.run(serply.maps_async(keyword="restaurants"))
@@ -90,7 +97,15 @@ def test_simple_search_maps_default_async():
 
 
 def test_simple_search_maps_in_spanish_async():
-    results = asyncio.run(serply.maps_async(keyword="restaurants in barcelona", hl="lang_es", gl="es", lr="es", cr="countryES"))
+    results = asyncio.run(
+        serply.maps_async(
+            keyword="restaurants in barcelona",
+            hl="lang_es",
+            gl="es",
+            lr="es",
+            cr="countryES",
+        )
+    )
     assert results
     assert "places" in results
     assert len(results["places"]) > 0
@@ -110,7 +125,15 @@ def test_simple_search_maps_in_spanish_async():
 
 
 def test_simple_search_maps_in_interface_german_async():
-    results = asyncio.run(serply.maps_async(keyword="restaurants in berlin", hl="lang_de", gl="de", lr="de", cr="countryDE"))
+    results = asyncio.run(
+        serply.maps_async(
+            keyword="restaurants in berlin",
+            hl="lang_de",
+            gl="de",
+            lr="de",
+            cr="countryDE",
+        )
+    )
     assert results
     assert "places" in results
     assert len(results["places"]) > 0
@@ -127,7 +150,6 @@ def test_simple_search_maps_in_interface_german_async():
                 break
     # make sure found at least one es
     assert found_one_de
-
 
 
 def test_simple_search_loc_default():

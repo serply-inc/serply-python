@@ -12,4 +12,3 @@ def test_generate_unsported_endpoint_job_url():
     with pytest.raises(ValueError) as e:
         serply.__generate_url__(keyword="nurse practitioner", endpoint="asdf")
         logging.error(e)
-

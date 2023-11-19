@@ -121,3 +121,24 @@ def test_simple_search_default_async():
     assert "title" in results["result"]
     assert "position" in results
     assert results["position"] == 1
+
+
+def test_request_post_serp_with_website_url():
+    data = {"query": "q=iphone", "domain": "apple.com", "website": "apple.com"}
+    url = "https://api.serply.io/v1/serp/"
+    results = serply.__make_request__(url=url, method="post", json=data)
+    assert results
+    assert "result" in results
+
+
+# test post versions
+def test_request_post_serp_with_website_url_async():
+    data = {"query": "q=iphone", "domain": "apple.com", "website": "apple.com"}
+    url = "https://api.serply.io/v1/serp/"
+    results = asyncio.run(
+        serply.__make_request_async__(url=url, method="post", json=data)
+    )
+    assert "result" in results
+    assert "title" in results["result"]
+    assert "position" in results
+    assert results["position"] == 1

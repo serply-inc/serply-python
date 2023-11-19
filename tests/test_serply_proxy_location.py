@@ -29,10 +29,12 @@ async def search_proxy_location(proxy_location: str):
 
 
 async def search_proxy_locations():
-    tasks = [search_proxy_location(proxy_location) for proxy_location in PROXY_LOCATIONS]
+    tasks = [
+        search_proxy_location(proxy_location) for proxy_location in PROXY_LOCATIONS
+    ]
     results = await asyncio.gather(*tasks)
     return results
-    
+
 
 def test_search_with_num_async():
     results = results = asyncio.run(search_proxy_locations())
@@ -41,4 +43,3 @@ def test_search_with_num_async():
         assert result
         assert "results" in result
         assert len(result["results"]) >= 10
-    

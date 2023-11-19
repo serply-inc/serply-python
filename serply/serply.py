@@ -121,7 +121,7 @@ class Serply(object):
             e = "endpoint selected: {endpoint} is not supported."
             self.logger.error(e)
             raise ValueError(e)
-        
+
     def __make_request__(self, url: str, method: str = "get", *args, **kwargs) -> Dict:
         """
             make a request to the API
