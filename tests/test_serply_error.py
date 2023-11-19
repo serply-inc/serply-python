@@ -28,7 +28,7 @@ def test_request_post_serp_with_website_url_not_exists():
 def test_request_post_serp_with_website_url_not_exists_async():
     data = {"query": "q=iphone", "domain": "apple.com", "website": "apple.com"}
     url = "https://api.serply.io/v1/asdfasdf/"
-    with pytest.raises(ClientResponseError) as e:
+    with pytest.raises(ClientResponseError):
         results = asyncio.run(
             serply.__make_request_async__(url=url, method="post", json=data)
         )
@@ -40,9 +40,8 @@ def test_request_post_serp_with_website_url_not_exists_async():
 
 # test post versions
 def test_request_get_serp_with_website_url_not_exists_async():
-    data = {"query": "q=iphone", "domain": "apple.com", "website": "apple.com"}
     url = "https://api.serply.io/v1/asdfasdf/"
-    with pytest.raises(ClientResponseError) as e:
+    with pytest.raises(ClientResponseError):
         results = asyncio.run(
             serply.__make_request_async__(url=url, method="get")
         )
