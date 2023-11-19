@@ -110,9 +110,7 @@ class Serply(object):
             return f"{self.base_url}{self.api_version}/crawl/{urlencode(params)}"
         elif endpoint == "serp":
             if "domain" not in params and "website" not in params:
-                raise ValueError(
-                    "domain or website is required for the SERP endpoint."
-                )
+                raise ValueError("domain or website is required for the SERP endpoint.")
             return f"{self.base_url}{self.api_version}/serp/{urlencode(params)}"
         else:
             # default to search
@@ -626,7 +624,13 @@ class Serply(object):
         return self.__make_request__(url=url)
 
     async def serp_async(
-        self, keyword: str, domain: str, num: int = 100, engine: str = "google", *args, **kwargs
+        self,
+        keyword: str,
+        domain: str,
+        num: int = 100,
+        engine: str = "google",
+        *args,
+        **kwargs,
     ) -> dict:
         """
             perform a search asynchronously returning back the HTML for custom parsing
@@ -653,10 +657,9 @@ class Serply(object):
         self.logger.debug(f"Performing async serp with {locals()}")
         return await self.__make_request_async__(url=url)
 
-
     def maps(
-        self, 
-        keyword: str, 
+        self,
+        keyword: str,
         num: int = 10,
         hl="lang_en",
         gl="us",
@@ -691,8 +694,8 @@ class Serply(object):
         return self.__make_request__(url=url)
 
     async def maps_async(
-        self, 
-        keyword: str, 
+        self,
+        keyword: str,
         num: int = 10,
         hl="lang_en",
         gl="us",

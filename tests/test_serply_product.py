@@ -42,4 +42,3 @@ def test_simple_product_search_async():
     for product in results["products"]:
         assert "link" in product
         assert product["link"]
-

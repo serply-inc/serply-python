@@ -14,7 +14,9 @@ def test_generate_simple_search_maps_url():
 
 
 def test_generate_simple_search_maps_url_num_100():
-    url = serply.__generate_url__(keyword="apple store in dallas", endpoint="maps", num=100)
+    url = serply.__generate_url__(
+        keyword="apple store in dallas", endpoint="maps", num=100
+    )
     assert url == "https://api.serply.io/v1/maps/q=apple+store+in+dallas&num=100"
 
 
@@ -60,7 +62,7 @@ def test_simple_search_maps_in_interface_german():
     assert len(results["places"]) > 0
 
     for place in results["places"]:
-       if "description" in place and place["description"]:
+        if "description" in place and place["description"]:
             descriptions = place["description"]
             detected_language, confidence = langid.classify(
                 " ".join(descriptions).encode("utf-8")
@@ -68,7 +70,6 @@ def test_simple_search_maps_in_interface_german():
             if detected_language == "de":
                 assert True
                 return
-
 
 
 # test async versions

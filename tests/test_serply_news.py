@@ -79,9 +79,7 @@ def test_simple_news_default_async():
 
 
 def test_simple_news_in_spanish_async():
-    results = asyncio.run(
-        serply.news_async(keyword="apple", hl="lang_es", gl="es")
-    )
+    results = asyncio.run(serply.news_async(keyword="apple", hl="lang_es", gl="es"))
     assert results
     assert "feed" in results
     assert results["feed"]
@@ -97,9 +95,7 @@ def test_simple_news_in_spanish_async():
 
 
 def test_simple_news_in_interface_german_async():
-    results = asyncio.run(
-        serply.news_async(keyword="microsoft", hl="lang_de", gl="de")
-    )
+    results = asyncio.run(serply.news_async(keyword="microsoft", hl="lang_de", gl="de"))
     assert results
     assert "feed" in results
     assert results["feed"]
