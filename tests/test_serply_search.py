@@ -6,6 +6,7 @@ from serply.serply import Serply
 API_KEY = os.getenv("API_KEY", None)
 
 serply = Serply(api_key=API_KEY)
+serply_mobile = Serply(api_key=API_KEY, device_type="mobile")
 
 
 def test_generate_simple_search_url():
@@ -99,7 +100,9 @@ def test_simple_search_default_async():
 
 
 def test_simple_search_in_spanish_async():
-    results = asyncio.run(serply.search_async(keyword="iphone", lr="lang_es"))
+    results = asyncio.run(
+        serply.search_async(keyword="iphone", lr="lang_es", cr="countryES")
+    )
     assert results
     assert "results" in results
     assert len(results["results"]) > 0
@@ -114,7 +117,9 @@ def test_simple_search_in_spanish_async():
 
 
 def test_simple_search_in_interface_german_async():
-    results = asyncio.run(serply.search_async(keyword="iphone", hl="lang_de", gl="de"))
+    results = asyncio.run(
+        serply.search_async(keyword="iphone", hl="lang_de", gl="de", cr="countryDE")
+    )
     assert results
     assert "results" in results
     assert len(results["results"]) > 0
@@ -137,6 +142,20 @@ def test_simple_search_bing_async():
 
 def test_search_with_num_async():
     results = asyncio.run(serply.search_async(keyword="iphone", num=30))
+    assert results
+    assert "results" in results
+    assert len(results["results"]) >= 10
+
+
+def test_search_with_mobile_num():
+    results = serply_mobile.search(keyword="iphone", num=30)
+    assert results
+    assert "results" in results
+    assert len(results["results"]) >= 10
+
+
+def test_search_with_mobile_async():
+    results = asyncio.run(serply_mobile.search_async(keyword="iphone", num=30))
     assert results
     assert "results" in results
     assert len(results["results"]) >= 10

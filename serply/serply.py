@@ -78,8 +78,6 @@ class Serply(object):
             params["hl"] = kwargs["hl"]
         if "cr" in kwargs and kwargs["cr"]:
             params["cr"] = kwargs["cr"]
-        if "cr" in kwargs and kwargs["cr"]:
-            params["cr"] = kwargs["cr"]
         if "loc" in kwargs and kwargs["loc"]:
             params["loc"] = kwargs["loc"]
         if "domain" in kwargs and kwargs["domain"]:
@@ -110,17 +108,19 @@ class Serply(object):
             return f"{self.base_url}{self.api_version}/crawl/{urlencode(params)}"
         elif endpoint == "serp":
             if "domain" not in params and "website" not in params:
-                raise ValueError(
-                    "domain or website is required for the SERP endpoint."
-                )
+                raise ValueError("domain or website is required for the SERP endpoint.")
             return f"{self.base_url}{self.api_version}/serp/{urlencode(params)}"
-        else:
+        elif endpoint == "search":
             # default to search
             if "engine" in kwargs and kwargs["engine"].lower() in ["bing", "b"]:
                 return f"{self.base_url}{self.api_version}/b/search/{urlencode(params)}"
             else:
                 # defaults to google
                 return f"{self.base_url}{self.api_version}/search/{urlencode(params)}"
+        else:
+            e = "endpoint selected: {endpoint} is not supported."
+            self.logger.error(e)
+            raise ValueError(e)
 
     def __make_request__(self, url: str, method: str = "get", *args, **kwargs) -> Dict:
         """
@@ -626,7 +626,13 @@ class Serply(object):
         return self.__make_request__(url=url)
 
     async def serp_async(
-        self, keyword: str, domain: str, num: int = 100, engine: str = "google", *args, **kwargs
+        self,
+        keyword: str,
+        domain: str,
+        num: int = 100,
+        engine: str = "google",
+        *args,
+        **kwargs,
     ) -> dict:
         """
             perform a search asynchronously returning back the HTML for custom parsing
@@ -653,10 +659,9 @@ class Serply(object):
         self.logger.debug(f"Performing async serp with {locals()}")
         return await self.__make_request_async__(url=url)
 
-
     def maps(
-        self, 
-        keyword: str, 
+        self,
+        keyword: str,
         num: int = 10,
         hl="lang_en",
         gl="us",
@@ -691,8 +696,8 @@ class Serply(object):
         return self.__make_request__(url=url)
 
     async def maps_async(
-        self, 
-        keyword: str, 
+        self,
+        keyword: str,
         num: int = 10,
         hl="lang_en",
         gl="us",
@@ -719,6 +724,78 @@ class Serply(object):
             gl=gl,
             lr=lr,
             endpoint="maps",
+            *args,
+            **kwargs,
+        )
+
+        self.logger.debug(f"Performing job async search with {locals()}")
+        return await self.__make_request_async__(url=url)
+
+    def scholar(
+        self,
+        keyword: str,
+        num: int = 10,
+        hl="lang_en",
+        gl="us",
+        lr="lang_en",
+        engine="google",
+        *args,
+        **kwargs,
+    ) -> dict:
+        """
+            search places on Google scholar
+        :param keyword: str: keywords to search for scholar
+        :param keyword: str: keywords to search for
+        :param num: int: number of results to return (max 100, defaults to 10)
+        :param engine: str: search engine to use (defaults to google) [google, bing]
+        :param start: int: start index for results (defaults to 0)
+        :return: dict: response from API
+        """
+        results = {}
+        url = self.__generate_url__(
+            keyword=keyword,
+            num=num,
+            engine=engine,
+            hl=hl,
+            gl=gl,
+            lr=lr,
+            endpoint="scholar",
+            *args,
+            **kwargs,
+        )
+
+        self.logger.debug(f"Performing job search with {locals()}")
+        return self.__make_request__(url=url)
+
+    async def scholar_async(
+        self,
+        keyword: str,
+        num: int = 10,
+        hl="lang_en",
+        gl="us",
+        lr="lang_en",
+        engine="google",
+        *args,
+        **kwargs,
+    ) -> dict:
+        """
+            search places on Google scholar
+        :param keyword: str: keywords to search for scholar
+        :param num: int: number of results to return (max 100, defaults to 10)
+        :param engine: str: search engine to use (defaults to google) [google, bing]
+        :param start: int: start index for results (defaults to 0)
+        :return: dict: response from API
+        """
+        results = {}
+
+        url = self.__generate_url__(
+            keyword=keyword,
+            num=num,
+            engine=engine,
+            hl=hl,
+            gl=gl,
+            lr=lr,
+            endpoint="scholar",
             *args,
             **kwargs,
         )

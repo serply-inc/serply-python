@@ -23,7 +23,7 @@ def test_generate_product_search_snacks():
 
 
 def test_simple_product_search_default():
-    results = serply.product(keyword="smart phones")
+    results = serply.product(keyword="iphones")
     assert results
     assert "results" not in results
     assert "products" in results
@@ -42,4 +42,3 @@ def test_simple_product_search_async():
     for product in results["products"]:
         assert "link" in product
         assert product["link"]
-
