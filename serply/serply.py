@@ -791,7 +791,7 @@ class Serply(object):
             hl=hl,
             gl=gl,
             lr=lr,
-            endpoint="maps",
+            endpoint="scholar",
             *args,
             **kwargs,
         )
