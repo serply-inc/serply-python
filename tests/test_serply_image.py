@@ -1,8 +1,5 @@
 import os
-import unittest
-import pytest
 import asyncio
-import langid
 from serply.serply import Serply
 
 API_KEY = os.getenv("API_KEY", None)

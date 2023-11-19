@@ -1,5 +1,4 @@
 import os
-import asyncio
 from serply.serply import Serply
 
 API_KEY = os.getenv("API_KEY", "")

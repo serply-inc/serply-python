@@ -1,8 +1,5 @@
 import os
-import unittest
-import pytest
 import asyncio
-import langid
 from serply.serply import Serply
 
 API_KEY = os.getenv("API_KEY", None)
@@ -10,12 +7,12 @@ API_KEY = os.getenv("API_KEY", None)
 serply = Serply(api_key=API_KEY)
 
 
-def test_generate_simple_product_search_url():
+def test_generate_simple_product_one_search_url():
     url = serply.__generate_url__(keyword="computers", endpoint="product")
     assert url == "https://api.serply.io/v1/product/search/q=computers"
 
 
-def test_generate_simple_product_search_url():
+def test_generate_simple_product_two_search_url():
     url = serply.__generate_url__(keyword="toys", endpoint="product")
     assert url == "https://api.serply.io/v1/product/search/q=toys"
 
