@@ -110,14 +110,18 @@ class Serply(object):
             if "domain" not in params and "website" not in params:
                 raise ValueError("domain or website is required for the SERP endpoint.")
             return f"{self.base_url}{self.api_version}/serp/{urlencode(params)}"
-        else:
+        elif endpoint == "search":
             # default to search
             if "engine" in kwargs and kwargs["engine"].lower() in ["bing", "b"]:
                 return f"{self.base_url}{self.api_version}/b/search/{urlencode(params)}"
             else:
                 # defaults to google
                 return f"{self.base_url}{self.api_version}/search/{urlencode(params)}"
-
+        else:
+            e = "endpoint selected: {endpoint} is not supported."
+            self.logger.error(e)
+            raise ValueError(e)
+        
     def __make_request__(self, url: str, method: str = "get", *args, **kwargs) -> Dict:
         """
             make a request to the API
