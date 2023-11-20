@@ -1,6 +1,5 @@
 ![coverage badge](https://raw.githubusercontent.com/serply-inc/serply-python/main/coverage.svg)
 
-
 ![serply logo](https://raw.githubusercontent.com/serply-inc/serply-python/main/images/serply_logo.png)
 
 # Serply Python SDK

@@ -44,10 +44,10 @@ def test_generate_scholar_search_url_start_gl():
 def test_simple_scholar_search_default():
     results = serply.scholar(keyword="machine learning")
     assert results
-    assert "html" in results
+    assert "articles" in results
 
 
 def test_simple_search_default_async():
     results = asyncio.run(serply.scholar_async(keyword="machine learning"))
     assert results
-    assert "html" in results
+    assert "articles" in results
